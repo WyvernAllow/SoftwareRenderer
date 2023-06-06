@@ -72,6 +72,17 @@ void renderer_draw_line(struct Renderer *renderer, uint16_t x0, uint16_t y0, uin
     }
 }
 
+void renderer_draw_rect(struct Renderer *renderer, uint16_t x, uint16_t y, uint16_t w, uint16_t h, float r, float g, float b, float a)
+{
+    for(uint16_t j = y; j < y + h; j++)
+    {
+        for(uint16_t i = x; i < x + w; i++)
+        {
+            renderer_draw_pixel(renderer, i, j, r, g, b, a);
+        }
+    }
+}
+
 void renderer_draw_char(struct Renderer *renderer, uint16_t x, uint16_t y, char character, float r, float g, float b, float a)
 {
     int index = character - 32;

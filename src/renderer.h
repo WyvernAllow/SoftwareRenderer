@@ -18,6 +18,7 @@ void renderer_clear(struct Renderer *renderer, float r, float g, float b, float 
 
 void renderer_draw_pixel(struct Renderer *renderer, uint16_t x, uint16_t y, float r, float g, float b, float a);
 void renderer_draw_line(struct Renderer *renderer, uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, float r, float g, float b, float a);
+void renderer_draw_rect(struct Renderer *renderer, uint16_t x, uint16_t y, uint16_t w, uint16_t h, float r, float g, float b, float a);
 
 void renderer_draw_char(struct Renderer *renderer, uint16_t x, uint16_t y, char character, float r, float g, float b, float a);
 void renderer_draw_string(struct Renderer *renderer, uint16_t x, uint16_t y, float r, float g, float b, float a, const char* string);
