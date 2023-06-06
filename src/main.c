@@ -1,44 +1,58 @@
 #include "utils.h"
-#include "renderer.h"
+#include "graphics.h"
 
+#include <SDL2/SDL_cpuinfo.h>
+#include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <stdbool.h>
+
+#include <SDL2/SDL.h>
+
+#define WIDTH 800
+#define HEIGHT 450
 
 int main(int argc, char **argv)
 {
-    struct Renderer* renderer = renderer_create(800, 450);
-
-    // Clear the screen to black.
-    renderer_clear(renderer, 0.0, 0.0, 0.0, 1.0);
-
-    // Draw a gradient based on the x and y coordinates of the screen.
-    for(int y = 0; y < renderer->height; y++)
+    if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
     {
-        for(int x = 0; x < renderer->width; x++)
-        {
-            float r = ((float)x / renderer->width) * 0.5f;
-            float g = ((float)y / renderer->height) * 0.5f;
-            float b = 0.0f;
-
-            renderer_draw_pixel(renderer, x, y, r, g, b, 1.0);
-        }
+        fprintf(stderr, "Error: Could not initialize SDL. %s\n", SDL_GetError());
     }
 
-    // Draw a line from the bottom left corner to the top right corner of the screen.
-    renderer_draw_line(renderer, 0, 0, renderer->width, renderer->height, 1.0, 1.0, 1.0, 1.0);
+    SDL_Window* window = SDL_CreateWindow("Software Renderer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_RESIZABLE);
+    if(!window)
+    {
+        fprintf(stderr, "Error: Could not create window. %s\n", SDL_GetError());
+    }
 
-    // Draw a rectangle around the text.
-    renderer_draw_rect(renderer, 0, renderer->height - 60, 250, 60, 0.0, 0.0, 0.0, 1.0);
+    SDL_Surface* window_surface = SDL_GetWindowSurface(window);
 
-    // Draw different colored pieces of text onto the screen.
-    renderer_draw_string(renderer, 0, renderer->height - 13, 1.0, 0.0, 0.0, 1.0, "This is the color red!");
-    renderer_draw_string(renderer, 0, renderer->height - 26, 0.0, 1.0, 0.0, 1.0, "This is the color green!");
-    renderer_draw_string(renderer, 0, renderer->height - 39, 0.0, 0.0, 1.0, 1.0, "This is the color blue!");
+    struct gfx_context *ctx = gfx_create(window_surface);
     
-    // Test the formatted text rendering by printing the date onto the screen. 
-    time_t t;
-    time(&t);
-    renderer_draw_stringf(renderer, 0, 0, 1.0, 1.0, 1.0, 1.0, "This image was rendered on %s", ctime(&t));
+    bool running = true;
+    while(running)
+    {
+        SDL_Event event;
+        while(SDL_PollEvent(&event))
+        {
+            switch(event.type)
+            {
+                case SDL_QUIT:
+                    running = false;
+                    break;
 
-    utils_bmp_write("out.bmp", renderer->width, renderer->height, renderer->color_buffer);
+                case SDL_WINDOWEVENT:
+                    if(event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+                    {
+                        ctx->surface = SDL_GetWindowSurface(window);
+                    }
+                    break;
+            }
+        }
+
+        gfx_clear(ctx, 0.0, 0.0, 0.0);
+
+        gfx_draw_stringf(ctx, 0, 0, 1.0, 1.0, 1.0, "Resolution: %ix%i", ctx->surface->w, ctx->surface->h);
+
+        SDL_UpdateWindowSurface(window);
+    }
 }

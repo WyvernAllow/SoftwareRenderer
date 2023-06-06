@@ -1,9 +1,9 @@
 CC := $(CC)
 CFLAGS := -Wall -Werror -std=c99
-LDFLAGS := -lm
+LDFLAGS := -lm -lSDL2
 TARGET := software-renderer
 
-SRCS := src/main.c src/utils.c src/renderer.c
+SRCS := src/main.c src/utils.c src/graphics.c
 
 # Directory for object files
 OBJ_DIR := bin
