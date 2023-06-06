@@ -1,4 +1,3 @@
-#include "utils.h"
 #include "graphics.h"
 
 #include <SDL2/SDL_cpuinfo.h>
@@ -27,7 +26,7 @@ int main(int argc, char **argv)
     SDL_Surface* window_surface = SDL_GetWindowSurface(window);
 
     struct gfx_context *ctx = gfx_create(window_surface);
-    
+
     bool running = true;
     while(running)
     {

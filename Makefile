@@ -3,7 +3,7 @@ CFLAGS := -Wall -Werror -std=c99
 LDFLAGS := -lm -lSDL2
 TARGET := software-renderer
 
-SRCS := src/main.c src/utils.c src/graphics.c
+SRCS := src/main.c src/graphics.c
 
 # Directory for object files
 OBJ_DIR := bin
