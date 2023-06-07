@@ -15,7 +15,7 @@ void gfx_clear(struct gfx_context *context, float r, float g, float b);
 
 void gfx_draw_pixel(struct gfx_context *context, uint16_t x, uint16_t y, float r, float g, float b);
 
-void gfx_draw_line(struct gfx_context *context, uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, float r, float g, float b);
+void gfx_draw_line(struct gfx_context *context, uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, float r, float g, float b);
 void gfx_draw_rect(struct gfx_context *context, uint16_t x, uint16_t y, uint16_t w, uint16_t h, float r, float g, float b);
 
 void gfx_draw_char(struct gfx_context *context, uint16_t x, uint16_t y, float r, float g, float b, char character);

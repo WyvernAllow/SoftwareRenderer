@@ -29,33 +29,37 @@ void gfx_draw_pixel(struct gfx_context *context, uint16_t x, uint16_t y, float r
     *target_pixel = SDL_MapRGB(context->surface->format, (uint8_t)(r * 255.0f), (uint8_t)(g * 255.0f), (uint8_t)(b * 255.0f));
 }
 
-void gfx_draw_line(struct gfx_context *context, uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, float r, float g, float b)
+void gfx_draw_line(struct gfx_context *context, uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, float r, float g, float b)
 {
-    int dx = x2 - x1;
-    int dy = y2 - y1;
+    // Calculate the differences and absolute differences between the coordinates
+    int16_t dx = abs(x1 - x0);
+    int16_t dy = abs(y1 - y0);
+    int16_t sx = x0 < x1 ? 1 : -1;
+    int16_t sy = y0 < y1 ? 1 : -1;
 
-    int x = x1;
-    int y = y1;
+    // Set initial error term and coordinates
+    int16_t err = (dx > dy ? dx : -dy) / 2;
+    int16_t current_x = x0;
+    int16_t current_y = y0;
 
-    int p = 2 * dy - dx;
-
-    while(x < x1)
+    // Loop until we reach the end point
+    while (current_x != x1 || current_y != y1)
     {
-        if(p >= 0)
+        // Set the pixel at the current coordinates
+        gfx_draw_pixel(context, current_x, current_y, r, g, b);
+
+        // Calculate the next coordinates
+        int16_t err2 = err;
+        if (err2 > -dx)
         {
-            gfx_draw_pixel(context, x, y, r, g, b);
-
-            y++;
-            p += 2 * dy - 2 * dx;
+            err -= dy;
+            current_x += sx;
         }
-        else
+        if (err2 < dy)
         {
-            gfx_draw_pixel(context, x, y, r, g, b);
-
-            p += 2 * dy;
+            err += dx;
+            current_y += sy;
         }
-
-        x++;
     }
 }
 
