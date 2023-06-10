@@ -36,7 +36,7 @@ void gfx_draw_line(struct gfx_context *context, uint16_t x0, uint16_t y0, uint16
     int16_t dy = abs(y1 - y0);
     int16_t sx = x0 < x1 ? 1 : -1;
     int16_t sy = y0 < y1 ? 1 : -1;
-
+    
     // Set initial error term and coordinates
     int16_t err = (dx > dy ? dx : -dy) / 2;
     int16_t current_x = x0;

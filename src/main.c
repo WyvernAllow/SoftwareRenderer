@@ -54,4 +54,8 @@ int main(int argc, char **argv)
 
         SDL_UpdateWindowSurface(window);
     }
+
+    SDL_DestroyWindow(window);
+    gfx_destroy(ctx);
+    SDL_Quit();
 }
